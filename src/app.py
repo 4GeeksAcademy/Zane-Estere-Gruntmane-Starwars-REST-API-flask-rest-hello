@@ -45,6 +45,41 @@ def handle_hello():
 
     return jsonify(response_body), 200
 
+@app.route ('/people', methods=['GET'])
+def get_list_people():
+    people_list = people.get_all_people()
+    response_body = {
+        "list_of_people": people
+    }
+    return jsonify(response_body), 200
+
+@app.route('/people/<int:people_id>', methods=['GET'])
+def handle_get_single_people(people_id):
+    single_people = people.get_single_people(people_id)
+
+    if single_people is None:
+        return jsonify({"error": "One single people not found"}), 404
+
+    return jsonify(single_people), 200
+
+@app.route ('/planets', methods=['GET'])
+def get_list_planets():
+    planets_list = planets.get_all_planets()
+    response_body = {
+        "list_of_planets": planets_list 
+    }
+    return jsonify(response_body), 200
+
+@app.route('/planets/<int:planet>', methods=['GET'])
+def handle_get_one_planet(planet_id):
+    one_planet = planets.get_one_planet(planet_id)
+
+    if one_planet is None:
+        return jsonify({"error": "The people you look for is not found"}), 404
+
+    return jsonify(one_planet), 200
+
+
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3000))
